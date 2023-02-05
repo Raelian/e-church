@@ -48,6 +48,8 @@ public class InterfataListaSfinti extends JPanel implements ActionListener{
         
         textSfinti = new JTextArea();
         textSfinti.setFont(new Font("Times New Roman", Font.BOLD, 25));
+        textSfinti.setLineWrap(true);
+        textSfinti.setWrapStyleWord(true);
         textSfinti.setEditable(false);
         
         scrollTextSfinti = new JScrollPane(textSfinti);
@@ -78,6 +80,7 @@ public class InterfataListaSfinti extends JPanel implements ActionListener{
             Boolean check = data.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})");
             if(check){
                 try{
+                    textSfinti.setText("");
                     String[] splitData = data.split("/");
                     String message = agenda.getSfintiList(splitData[0], splitData[1], splitData[2]);
                     textSfinti.append(message);

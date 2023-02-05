@@ -2,12 +2,16 @@ package e.churchagenda;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.HashMap;
 
 class AgendaEvenimente{
     private final HashMap<String, Luna> luni;
+    private final String fisierAnunt;
     
     AgendaEvenimente(){
+        this.fisierAnunt = "C:\\agenda\\anunturi.txt";
         this.luni = new HashMap<>();
         String luna;
         for(int i = 1; i < 13; i++){
@@ -31,6 +35,7 @@ class AgendaEvenimente{
         while((line = in.readLine()) != null){
             splitLine = line.split("-");
             message.append("Eveniment: ");
+            message.append(splitLine[0]);
             message.append("\r\n");
             message.append("Data: ");
             message.append(splitLine[1]);
@@ -53,18 +58,14 @@ class AgendaEvenimente{
         return message.toString();
     }
     
-    public String getAnuntList(String ziua, String luna, String anul) throws Exception{
-        String fileName = this.luni.get(luna).getZiua(ziua).getAnunt();
-        
-        BufferedReader in = new BufferedReader(new FileReader(fileName));
-        StringBuilder message = new StringBuilder("Lista cu anunturi pe data de " + ziua + "/" + luna + "/" + anul + ":\r\n\r\n");
-         
-        String line;
-        while((line = in.readLine()) != null){
-            message.append(line);
-        }
-        in.close();
-        return message.toString();
+    public String getAnuntList() throws Exception{
+        return this.fisierAnunt;
+    }
+    
+    public void setAnuntZiua(String anunt) throws Exception{
+        PrintWriter out = new PrintWriter(new FileWriter(this.fisierAnunt));
+        out.println(anunt);
+        out.close();
     }
     
     public String getSfintiList(String ziua, String luna, String anul) throws Exception{

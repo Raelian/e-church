@@ -9,6 +9,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,9 +26,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-class InterfataPlanEvent extends JPanel implements ActionListener{
+class InterfataPlanEvent extends JPanel implements ActionListener, FocusListener{
     JLabel titluPlanEvent, rightLabel;
-    JTextField eventField, ziuaField, oraField, adresaField, telField, nameField;
+    PlanEventFieldText eventField, ziuaField, oraField, adresaField, telField, nameField;
     JPanel leftPanel, bottomPanel, cardDeck;
     JButton savePlanBtn, backBtn;
     BufferedImage img;
@@ -44,22 +46,21 @@ class InterfataPlanEvent extends JPanel implements ActionListener{
         titluPlanEvent.setFont(new Font("Times New Roman", Font.BOLD, 30));
         titluPlanEvent.setBorder(BorderFactory.createEmptyBorder(50, 100, 30, 100));
         
-        eventField = new JTextField("Nunta");
-        ziuaField = new JTextField("24/02/1989");
-        oraField = new JTextField("14:00");
-        adresaField = new JTextField("Mugurului 15a");
-        telField = new JTextField("0721985675");
-        nameField = new JTextField("Mihai Emil");
-        
-        eventField.setPreferredSize(new Dimension(250, 30));
-        ziuaField.setPreferredSize(new Dimension(250, 30));
-        oraField.setPreferredSize(new Dimension(250, 30));
-        adresaField.setPreferredSize(new Dimension(250, 30));
-        telField.setPreferredSize(new Dimension(250, 30));
-        nameField.setPreferredSize(new Dimension(250, 30));
+        eventField = new PlanEventFieldText("Eveniment");
+        eventField.addFocusListener(this);
+        ziuaField = new PlanEventFieldText("dd/MM/yyyy");
+        ziuaField.addFocusListener(this);
+        oraField = new PlanEventFieldText("hh:mm");
+        oraField.addFocusListener(this);
+        adresaField = new PlanEventFieldText("Adresa");
+        adresaField.addFocusListener(this);
+        telField = new PlanEventFieldText("Telefon");
+        telField.addFocusListener(this);
+        nameField = new PlanEventFieldText("Nume Prenume");
+        nameField.addFocusListener(this);
         
         leftPanel = new JPanel(new GridLayout(6, 1, 50, 30));
-        leftPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 50, 100));
+        leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 100));
         leftPanel.add(eventField);
         leftPanel.add(ziuaField);
         leftPanel.add(oraField);
@@ -137,5 +138,65 @@ class InterfataPlanEvent extends JPanel implements ActionListener{
                 Logger.getLogger(InterfataPlanEvent.class.getName()).log(Level.SEVERE, null, ex);
             }
         }     
+    }
+    
+    public void addPlaceholder(JTextField txtField){
+        Font font = txtField.getFont();
+        font = font.deriveFont(Font.ITALIC);
+        txtField.setFont(font);
+        txtField.setForeground(Color.gray);
+    }
+    
+    public void removePlaceholder(JTextField txtField){
+        Font font = txtField.getFont();
+        font = font.deriveFont(Font.PLAIN);
+        txtField.setFont(font);
+        txtField.setForeground(Color.black);
+    }
+    
+    @Override
+    public void focusGained(FocusEvent e){
+        if(e.getSource() == eventField && eventField.getText().equals("Eveniment")){
+            eventField.setText(null);
+            removePlaceholder(eventField);         
+        }else if(e.getSource() == ziuaField && ziuaField.getText().equals("dd/MM/yyyy")){
+            ziuaField.setText(null);
+            removePlaceholder(ziuaField);
+        }else if(e.getSource() == oraField && oraField.getText().equals("hh:mm")){
+            oraField.setText(null);
+            removePlaceholder(oraField);
+        }else if(e.getSource() == adresaField && adresaField.getText().equals("Adresa")){
+            adresaField.setText(null);
+            removePlaceholder(adresaField);
+        }else if(e.getSource() == telField && telField.getText().equals("Telefon")){
+            telField.setText(null);
+            removePlaceholder(telField);
+        }else if(e.getSource() == nameField && nameField.getText().equals("Nume Prenume")){
+            nameField.setText(null);
+            removePlaceholder(nameField);
+        }
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        if(e.getSource() == eventField && eventField.getText().length() == 0){
+            eventField.setText("Eveniment");
+            addPlaceholder(eventField);
+        }else if(e.getSource() == ziuaField && ziuaField.getText().length() == 0){
+            ziuaField.setText("dd/MM/yyyy");
+            addPlaceholder(ziuaField);
+        }else if(e.getSource() == oraField && oraField.getText().length() == 0){
+            oraField.setText("hh:mm");
+            addPlaceholder(oraField);
+        }else if(e.getSource() == adresaField && adresaField.getText().length() == 0){
+            adresaField.setText("Adresa");
+            addPlaceholder(adresaField);
+        }else if(e.getSource() == telField && telField.getText().length() == 0){
+            telField.setText("Telefon");
+            addPlaceholder(telField);
+        }else if(e.getSource() == nameField && nameField.getText().length() == 0){
+            nameField.setText("Nume Prenume");
+            addPlaceholder(nameField);
+        }
     }
 }

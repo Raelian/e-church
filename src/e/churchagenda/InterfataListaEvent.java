@@ -79,6 +79,7 @@ class InterfataListaEvent extends JPanel implements ActionListener{
             Boolean check = data.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})");
             if(check){
                 try{
+                    textList.setText("");
                     data = ziuaListaField.getText();
                     String[] splitData = data.split("/");
                     String message = agenda.getEventList(splitData[0], splitData[1], splitData[2]);
